@@ -32,7 +32,7 @@ def active(request, activecode):
 	if user:
 		user[0].is_active = True
 		user[0].save()
-		response = HttpResponseRedirect('/online/index')
+		response = HttpResponseRedirect('/online/person_info')
 		response.set_cookie('user_id',user[0].id,3600)
 		response.set_cookie('user_email',user[0].email,3600)
 		response.set_cookie('user_name',user[0].name,3600)
@@ -70,15 +70,11 @@ def regist(request):
 					fail_silently=False,
 				)
 				response = HttpResponse('Please check your email')
-#				response = HttpResponseRedirect('/online/index')
-#				response.set_cookie('user_id',user.id,3600)
-#				response.set_cookie('user_email',user.email,3600)
-#				response.set_cookie('user_name',user.name,3600)
 				return response
 	else:
 		uf = RegUserForm()
-	return render(request,'online/regist.html',{'uf':uf,'errmsg':errmsg})
-
+	return HttpResponseRedirect('/online/')
+	#return render(request,'online/index.html',{'uf':uf,'errmsg':errmsg})
 
 # login
 @csrf_exempt
@@ -91,7 +87,7 @@ def login(request):
 			password = uf.cleaned_data['password']
 			user = User.objects.filter(email__exact = email, password__exact = password, is_active__exact = True)
 			if user:
-				response = HttpResponseRedirect('/online/index')
+				response = HttpResponseRedirect('/online/person_info')
 				response.set_cookie('user_id',user[0].id,3600)
 				response.set_cookie('user_email',user[0].email,3600)
 				response.set_cookie('user_name',user[0].name,3600)
@@ -102,21 +98,21 @@ def login(request):
 			errmsg = 'form is invalid!'
 	else:
 		uf = LogUserForm()
-	return render(request,'online/login.html',{'uf':uf,'errmsg':errmsg})
+	return HttpResponseRedirect('/online/')
+	#return render(request,'online/index.html',{'uf':uf,'errmsg':errmsg})
 
 #login successfully
 @csrf_exempt
-def index(request):
+def person_info(request):
 	user_id = request.COOKIES.get('user_id')
 	user_name = request.COOKIES.get('user_name')
 	if user_id:
-		return render_to_response('online/index.html',{'login':True,'user_id':user_id,'user_name':user_name})
+		return render_to_response('online/person_info.html',{'login':True,'user_id':user_id,'user_name':user_name})
 	else:
-		return render_to_response('online/index.html',{'login':False})
+		return render_to_response('online/person_info.html',{'login':False})
 
-
-def logout(requset):
-	response = HttpResponseRedirect('/online/index')
+def logout(request):
+	response = HttpResponseRedirect('/online/person_info')
 
 	#clear cookie
 	response.delete_cookie('user_id')
@@ -124,37 +120,14 @@ def logout(requset):
 	response.delete_cookie('user_name')
 	return response
 
+def index(request):
+	return render(request, 'online/index.html', {})
 
+def mymusic(request):
+	return render(request,'online/mymusic.html',{})
 
+def discover_playlist(request):
+	return render(request,'online/discover_playlist.html',{})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# Create your views here.
+def discover_ranklist(request):
+	return render(request,'online/discover_ranklist.html',{})

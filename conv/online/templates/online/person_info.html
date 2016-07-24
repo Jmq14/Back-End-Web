@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+{% if login %}
+<h1>welcome {{user_name}} !</h1>
+<br>
+<a href="/online/logout/">登出</a>
+{%  else %}
+<h1>please login!</h1>
+<br>
+<a href="/online/">登录</a>
+{% endif %}
+</body>
+</html>

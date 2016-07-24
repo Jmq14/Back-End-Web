@@ -1,17 +1,157 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>卷积云音乐</title> 
+  	<link href="../static/core.css" type="text/css" rel="stylesheet">
+  	<link href="../static/pt_frame.css" type="text/css" rel="stylesheet"> 
+	<script type="text/javascript" src="../static/jquery-3.1.0.js"></script>
+	<script type="text/javascript" src="../static/login.js"></script>
 </head>
-<body>
-{% if login %}
-<h1>welcome {{user_name}} !</h1>
-<br>
-<a href="/online/logout/">登出</a>
-{%  else %}
-<h1>please login!</h1>
-<br>
-<a href="/online/">登录</a>
-{% endif %}
+<body> 
+	<div id="g-topbar" class="g-topbar" style="top: 0px;"> 
+		<div class="m-top"> 
+			<div class="wrap"> 
+				<h1 class="logo"><a>卷积云音乐</a></h1> 
+				<ul class="m-nav j-tflag"> 
+					<li class="fst"> <span><a hidefocus="true" href="/online/" data-module="discover" class="z-slt"><em>发现音乐</em><sub class="cor">&nbsp;</sub></a></span> </li> 
+					<li> <span><a data-res-action="bilog" data-log-action="page" data-log-json="{&quot;type&quot;:&quot;my&quot;}" hidefocus="true" href="/online/mymusic/" data-module="my"><em>我的音乐</em><sub class="cor">&nbsp;</sub></a></span></li>
+				</ul> 
+				<div class="m-tophead f-pr j-tflag" id="auto-id-wvDCrccTLJr19t2I">
+					<a hidefocus="true" class="link" onclick="login()">登录</a> 
+					<div class="m-tlist j-uflag" style="display:none;"> 
+						<i class="arr"></i> 
+					</div> 
+				</div> 
+				<a class="m-msg f-pr j-tflag" href="http://music.163.com/msg/#/at" style="display:none;"></a> 
+				<div class="m-srch f-pr j-suggest" id="g_search"> 
+					<div class="srchbg"> 
+						<span class="parent"> <input type="text" class="txt j-flag" value="" id="auto-id-uW4h2ATIcgTTM8rE"> <label class="ph j-flag" id="auto-id-vwd7Iu7TciSS9O7y">单曲/歌手/专辑/歌单/MV/用户</label> </span> 
+					</div> 
+					<div class="j-showoff u-showoff f-hide">
+						<p>现在支持搜索MV啦~</p>
+					</div> 
+					<span class="j-flag" style="display:none;" id="auto-id-QTT9Xn2Am3PTRVW5">&nbsp;</span> 
+					<div class="u-lstlay j-flag" style="display:none;" id="auto-id-0s9vgbZdA9pMs0E1"></div> 
+				</div> 
+			</div> 
+		</div> 
+		<div class="m-subnav m-subnav-up f-pr j-tflag f-hide"> 
+			<div class="shadow">
+				&nbsp;
+			</div> 
+		</div> 
+		<div id="g_nav2" class="m-subnav j-tflag"> 
+			<div class="wrap f-pr"> 
+				<ul class="nav"> 
+					<li><a hidefocus="true" data-module="discover" href="/online/" class="z-slt"><em>推荐</em></a></li> 
+					<li><a hidefocus="true" data-module="toplist" href="/online/discover_ranklist/"><em>排行榜</em></a></li> 
+					<li><a hidefocus="true" data-module="playlist" href="/online/discover_playlist/"><em>歌单</em></a></li> 
+				</ul> 
+			</div> 
+		</div> 
+	</div> 
+	<iframe name="contentFrame" id="g_iframe" class="g-iframe" scrolling="auto" frameborder="0" src="../static/发现音乐_推荐_files/saved_resource.html"></iframe> 
+	<div class="g-btmbar"> 
+		<div class="m-playbar m-playbar-lock" style="top: -53px; visibility: visible;" id="auto-id-9r2oUuSFPZQyyrh1"> 
+			<div class="updn"> 
+				<div class="left f-fl">
+					<a href="javascript:;" class="btn" hidefocus="true" data-action="lock"></a>
+				</div> 
+				<div class="right f-fl"></div> 
+			</div> 
+			<div class="bg"></div> 
+			<div class="hand" title="展开播放条"></div> 
+			<div class="wrap" id="g_player"> 
+				<div class="btns"> 
+					<a href="javascript:;" hidefocus="true" data-action="prev" class="prv" title="上一首(ctrl+←)">上一首</a> 
+					<a href="javascript:;" hidefocus="true" data-action="play" class="ply j-flag" title="播放/暂停(p)">播放/暂停</a> 
+					<a href="javascript:;" hidefocus="true" data-action="next" class="nxt" title="下一首(ctrl+→)">下一首</a> 
+				</div> 
+				<div class="head j-flag">
+					<img src="../static/default_album.jpg">
+					<a href="javascript:;" hidefocus="true" class="mask"></a>
+				</div> 
+				<div class="play"> 
+					<div class="j-flag words"></div> 
+					<div class="m-pbar" data-action="noop"> 
+						<div class="barbg j-flag" id="auto-id-Dcu0plrhNbZTsEJM"> 
+							<div class="rdy" style="width:0%;"></div> 
+							<div class="cur" style="width:0%;">
+								<span class="btn f-tdn f-alpha" id="auto-id-sCU9o7RcyrpM5zWh"><i></i></span>
+							</div> 
+						</div> 
+						<span class="j-flag time"><em>00:00</em> / 00:00</span> 
+					</div> 
+				</div> 
+				<div class="oper f-fl"> 
+					<a href="javascript:;" hidefocus="true" data-action="like" class="icn icn-add j-flag" title="收藏">收藏</a> 
+					<a href="javascript:;" hidefocus="true" data-action="share" class="icn icn-share" title="分享">分享</a> 
+					<a title="播放音乐, 即刻解析" class="jx_dl jx_btn"></a>
+				</div> 
+				<div class="ctrl f-fl f-pr j-flag"> 
+					<div class="m-vol" style="visibility:hidden;" id="auto-id-Nn473qItrX36Zcqx"> 
+						<div class="barbg"></div> 
+						<div class="vbg j-t" id="auto-id-qfpPx8rTt5bIVvy7">
+							<div class="curr j-t" style="height: 46.5px;"></div> 
+							<span class="btn f-alpha j-t" style="top: 40.5px;"></span>
+						</div> 
+					</div> 
+					<a href="javascript:;" hidefocus="true" data-action="volume" class="icn icn-vol"></a> 
+					<a href="javascript:;" hidefocus="true" data-action="mode" class="icn icn-loop" title="循环"></a> 
+					<span class="add f-pr"> <span class="tip" style="display:none;">已添加到播放列表</span> <a href="javascript:;" title="播放列表" hidefocus="true" data-action="panel" class="icn icn-list s-fc3">0</a> </span> 
+					<div class="tip tip-1" style="display:none;">
+						循环
+					</div> 
+				</div> 
+			</div> 
+		</div> 
+	</div>
+	<div class="m-layer z-show" id="login" style="top: 166px; left: 418px;display:none">
+		<div class="zbar" id="auto-id-szHnBwmMIDNzZuXF"><div class="zttl">用户登录</div>
+	</div>
+	<div class="zcnt">
+		<div class="lyct lyct-1" id="auto-id-ApWmSzqhd5aFCz7y">
+			<div class="n-log2 n-log2-2">
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type="hidden" name="csrfmiddlewaretoken" value="UDcfrJLbFb7QwpfNEN29Jyd51Hmt92rT">
+					<p><input id="id_email" class="js-input u-txt" placeholder="请输入邮箱" name="email" type="email"></p>
+					<br>
+					<p><input id="id_password" class="js-input u-txt" placeholder="请输入密码" name="password" type="password"></p>
+					<br>
+					<input type="submit" value="登 录" style="width: 220px; height: 30px;" onclick="buttunClicked()">
+				</form>
+			</div>
+			<div class="js-btmbar n-loglink2 f-cb">
+				<a onclick="regist()" class="f-fr">没有帐号？免费注册&nbsp;&nbsp;&gt;</a>
+			</div>
+		</div>
+	</div>
+	<span class="zcls" title="关闭窗体" onclick="closeWindow()">×</span>
+</div>
+<div class="m-layer z-show" id="regist" style="top: 166px; left: 418px;display:none">
+	<div class="zbar" id="auto-id-szHnBwmMIDNzZuXF"><div class="zttl">用户注册</div></div>
+	<div class="zcnt">
+		<div class="lyct lyct-1" id="auto-id-ApWmSzqhd5aFCz7y">
+			<div class="n-log2 n-log2-2">
+				<li> {{errmsg}} </li>
+				<form method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+					<input type='hidden' name='csrfmiddlewaretoken' value='UDcfrJLbFb7QwpfNEN29Jyd51Hmt92rT' />
+					<p><input id="id_email" class="js-input u-txt" placeholder="请输入邮箱" name="email" type="email"></p><br>
+					<p><input id="id_name" maxlength="50" class="js-input u-txt" placeholder="请输入昵称" name="name" type="text" /></p><br>
+					<p><input id="id_password" class="js-input u-txt" placeholder="请输入密码" name="password" type="password" /></p><br>
+					<p><input id="id_password_again" class="js-input u-txt" placeholder="请再次输入密码" name="password_again" type="password" /></p><br>
+					<input type="submit" value="注 册" style="width: 220px; height: 30px;" onclick="buttunClicked()">
+					</form>
+			</div>
+			<div class="js-btmbar n-loglink2 f-cb">
+				<a onclick="login()" class="f-fr">已有账号？登录一下&nbsp;&nbsp;&gt;</a>
+			</div>
+		</div>
+	</div>
+	<span class="zcls" title="关闭窗体" onclick="closeWindow()">×</span>
+</div>
 </body>
 </html>
