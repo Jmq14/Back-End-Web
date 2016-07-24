@@ -12,7 +12,7 @@
 ## 服务器git使用
 中期检查前的所有代码在文件夹`convmusic`中，git仓库同步在文件夹`Back-End-Web`中。
 
-将更新的代码从本地clone来的仓库提交到本远程仓库（参看 http://rogerdudler.github.io/git-guide/index.zh.html，基本上就是make some change -> `git add` (添加新建的文件，图形界面可省掉这一步) -> `git commit -m "这次提交的标题"` -> `git push`）。
+将更新的代码从本地clone来的仓库提交到本远程仓库（参看 http://rogerdudler.github.io/git-guide/index.zh.html ，基本上就是make some change -> `git add` (添加新建的文件，图形界面可省掉这一步) -> `git commit -m "这次提交的标题"` -> `git push`）。
 
 然后登录服务器，在`Back-End-Web`文件夹目录下输入命令`git pull original master`便能更新到最新的master库内容。
 
