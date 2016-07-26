@@ -21,12 +21,8 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^online/',include('online.urls')),
-<<<<<<< HEAD
     url(r'^playlist/',include('playlist.urls')),
-=======
     url(r'', include('upload_avatar.urls')),
     url(r'^music/',include('music.urls')),
-
->>>>>>> eb11007015d407eed537c1b4c7ca958e45f74c62
 ]
 urlpatterns += staticfiles_urlpatterns()  
