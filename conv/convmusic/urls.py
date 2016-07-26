@@ -15,8 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns  
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^online/',include('online.urls')),
+    url(r'', include('upload_avatar.urls')),
+    url(r'^music/',include('music.urls')),
+
 ]
+urlpatterns += staticfiles_urlpatterns()  

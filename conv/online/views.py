@@ -1,13 +1,22 @@
+# -*- coding: utf-8 -*-
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import RequestContext
 from django import forms
-from online.models import User
+from models import User
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site
-from django.views.decorators.csrf import csrf_exempt
 import random
 import string
+import os
+from upload_avatar.app_settings import (
+    UPLOAD_AVATAR_UPLOAD_ROOT,
+    UPLOAD_AVATAR_AVATAR_ROOT,
+    UPLOAD_AVATAR_RESIZE_SIZE,
+)
+
+from upload_avatar import get_uploadavatar_context
+
 
 # RegUserForm
 class RegUserForm(forms.Form):
@@ -19,6 +28,15 @@ class RegUserForm(forms.Form):
 class LogUserForm(forms.Form):
 	email = forms.EmailField(label='email:',widget=forms.EmailInput())
 	password = forms.CharField(label='password',widget=forms.PasswordInput())
+
+def login_required(func):
+	def _deco(request):
+		if request.COOKIES.get('login')=="True":
+			return func(request)
+		else:
+			print request.COOKIES.get('login')
+			return HttpResponse("please login first")
+	return _deco
 
 def activation_code(id,length=10):
     
@@ -36,12 +54,12 @@ def active(request, activecode):
 		response.set_cookie('user_id',user[0].id,3600)
 		response.set_cookie('user_email',user[0].email,3600)
 		response.set_cookie('user_name',user[0].name,3600)
+		response.set_cookie('login',True,3600)
 		return response
 	else:
 		return HttpResponse('go to wrong page')
 
 # regist
-@csrf_exempt
 def regist(request):
 	errmsg = ''
 	if request.method == 'POST':
@@ -77,11 +95,10 @@ def regist(request):
 				return response
 	else:
 		uf = RegUserForm()
-	return render(request,'online/regist.html',{'uf':uf,'errmsg':errmsg})
+	return render(request,'online/regist.html',{'uf':uf,'errmsg':errmsg}, context_instance=RequestContext(request))
 
 
 # login
-@csrf_exempt
 def login(request):
 	errmsg = ''
 	if request.method == 'POST':
@@ -95,6 +112,8 @@ def login(request):
 				response.set_cookie('user_id',user[0].id,3600)
 				response.set_cookie('user_email',user[0].email,3600)
 				response.set_cookie('user_name',user[0].name,3600)
+				response.set_cookie('login',"True",3600)
+
 				return response
 			else:
 				errmsg = 'email or password was wrong!'
@@ -105,14 +124,13 @@ def login(request):
 	return render(request,'online/login.html',{'uf':uf,'errmsg':errmsg})
 
 #login successfully
-@csrf_exempt
 def index(request):
 	user_id = request.COOKIES.get('user_id')
 	user_name = request.COOKIES.get('user_name')
 	if user_id:
-		return render_to_response('online/index.html',{'login':True,'user_id':user_id,'user_name':user_name})
+		return render_to_response('online/index.html',{'login':True,'user_id':user_id,'user_name':user_name}, context_instance=RequestContext(request))
 	else:
-		return render_to_response('online/index.html',{'login':False})
+		return render_to_response('online/index.html',{'login':False}, context_instance=RequestContext(request))
 
 
 def logout(requset):
@@ -123,6 +141,49 @@ def logout(requset):
 	response.delete_cookie('user_email')
 	response.delete_cookie('user_name')
 	return response
+
+
+def find_content_type(filename):
+    """In production, you don't need this,
+    Static files should serve by web server, e.g. Nginx.
+    """
+    if filename.endswith(('.jpg', '.jpep')):
+        return 'image/jpeg'
+    if filename.endswith('.png'):
+        return 'image/png'
+    if filename.endswith('.gif'):
+        return 'image/gif'
+    return 'application/octet-stream'
+
+
+def get_upload_images(request, filename):
+    content_type = find_content_type(filename)
+    with open(os.path.join(UPLOAD_AVATAR_UPLOAD_ROOT, filename), 'r') as f:
+        return HttpResponse(f.read(), content_type=content_type)
+    
+def get_avatar(request, filename):
+    content_type = find_content_type(filename)
+    with open(os.path.join(UPLOAD_AVATAR_AVATAR_ROOT, filename), 'r') as f:
+        return HttpResponse(f.read(), content_type=content_type)
+
+def implement(request):
+	user_id = request.COOKIES.get('user_id')
+	if not user_id:
+		return HttpResponse('please login first!')
+	u = User.objects.get(id=user_id)
+	imgs = map(lambda size: "<p><img src='%s'/></p>" % u.get_avatar_url(size), UPLOAD_AVATAR_RESIZE_SIZE)
+	html = """<html><body><h2>%s<a href="/online/upload">upload avatar</a></h2>%s</boby></html>""" % (request.user.username,'\n'.join(imgs))
+	return HttpResponse(html)
+
+def upload(request):
+    return render_to_response(
+        'online/upload.html',
+        get_uploadavatar_context(),
+        context_instance = RequestContext(request)
+    )
+
+
+
 
 
 
