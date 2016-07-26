@@ -19,4 +19,5 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^online/',include('online.urls')),
+    url(r'^playlist/',include('playlist.urls')),
 ]
