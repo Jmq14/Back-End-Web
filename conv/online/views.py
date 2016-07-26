@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
 from django.template.response import TemplateResponse
+from django.http import JsonResponse
 import random
 import string
 
@@ -128,7 +129,7 @@ def mymusic(request):
 	return HttpResponse("<h1 style = 'font-size: 166px'>online/mymusic.html</h1>")
 
 def discover_playlist(request):
-	return {'content': 'discover_playlist'}
+	return JsonResponse({'content' : 'bbbbbbbbbbbb'})
 
 def discover_ranklist(request):
-	return HttpResponse("online/ranklist.html")
+	return JsonResponse({'content' : 'aaaaaaaaaaaaa'})

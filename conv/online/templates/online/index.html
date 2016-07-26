@@ -5,16 +5,22 @@
 	<title>卷积云音乐</title> 
   	<link href="../static/core.css" type="text/css" rel="stylesheet">
   	<link href="../static/pt_frame.css" type="text/css" rel="stylesheet">
+  	<link rel="stylesheet" href="../../static/homepage/nivo-slider.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../static/homepage/style.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="../../static/homepage/default.css" type="text/css" media="screen" />
     <script src="//cdn.bootcss.com/jquery/2.0.0/jquery.min.js"></script>
     <script src="//cdn.bootcss.com/jquery.pjax/1.9.6/jquery.pjax.min.js"></script>
+    <script type="text/javascript" src="../../static/homepage/jquery.nivo.slider.js"></script>
 </head>
 <body> 
 	<div id="g-topbar" class="g-topbar" style="top: 0px;"> 
 		<div class="m-top"> 
 			<div class="wrap"> 
-				<h1 class="logo">卷积云音乐</h1> 
+				<h1 class="logo"><a>卷积云音乐</a></h1> 
 				<ul class="m-nav j-tflag"> 
-          <li class="fst"> <span><a hidefocus="true" href="/online/" id="discover" class="z-slt"><em>发现音乐</em><sub class="cor">&nbsp;</sub></a></span> </li> 
+          <li> <span><a hidefocus="true" href="/online/" id="discover" class="z-slt"><em>推荐</em><sub class="cor">&nbsp;</sub></a></span></li>
+          <li> <span><a hidefocus="true" href="/online/ranklist/" id="ranklist"><em>排行榜</em><sub class="cor">&nbsp;</sub></a></span></li>
+          <li> <span><a hidefocus="true" href="/online/playlist/" id="playlist"><em>歌单</em><sub class="cor">&nbsp;</sub></a></span></li>
           <li> <span><a hidefocus="true" href="/online/mymusic/" id="mymusic"><em>我的音乐</em><sub class="cor">&nbsp;</sub></a></span></li>
         </ul> 
         <div class="m-tophead f-pr j-tflag" id="auto-id-wvDCrccTLJr19t2I">
@@ -26,7 +32,7 @@
         <a class="m-msg f-pr j-tflag" href="http://music.163.com/msg/#/at" style="display:none;"></a> 
         <div class="m-srch f-pr j-suggest" id="g_search"> 
           <div class="srchbg"> 
-            <span class="parent"> <input type="text" class="txt j-flag" value="" id="auto-id-uW4h2ATIcgTTM8rE"> <label class="ph j-flag" id="auto-id-vwd7Iu7TciSS9O7y">单曲/歌手/专辑/歌单/MV/用户</label> </span> 
+            <span class="parent"> <input type="text" class="txt j-flag" value="" id="auto-id-uW4h2ATIcgTTM8rE"> <label class="ph j-flag" id="auto-id-vwd7Iu7TciSS9O7y">单曲/歌手/</label> </span> 
           </div> 
           <div class="j-showoff u-showoff f-hide">
             <p>现在支持搜索MV啦~</p>
@@ -41,17 +47,22 @@
 				&nbsp;
 			</div> 
 		</div> 
-		<div id="g_nav2" class="m-subnav j-tflag"> 
-			<div class="wrap f-pr"> 
-				<ul class="nav"> 
-					<li><a hidefocus="true" data-module="discover" href="/online/" class="z-slt"><em>推荐</em></a></li> 
-					<li><a hidefocus="true" data-module="toplist" href="/online/discover_ranklist/"><em>排行榜</em></a></li> 
-					<li><a hidefocus="true" data-module="playlist" href="/online/discover_playlist/"><em>歌单</em></a></li> 
-				</ul> 
-			</div> 
-		</div> 
+		<div id="g_nav2" class="m-subnav f-hide j-tflag"></div> 
 	</div> 
-	<div id="g_content">hhhhhhhh</div>
+	<div class = "g-content">
+        <div class="slider-wrapper theme-default">
+            <div id="slider" class="nivoSlider">
+                <img src="../../static/homepage/toystory.jpg"/>
+                <a href="http://dev7studios.com"><img src="../../static/homepage/up.jpg"/></a>
+                <img src="../../static/homepage/walle.jpg" alt="" data-transition="slideInLeft" />
+                <img src="../../static/homepage/nemo.jpg" alt="" title="#htmlcaption" />
+            </div>
+            <div id="htmlcaption" class="nivo-html-caption">
+                <strong>This</strong> is an example of a <em>HTML</em> caption with <a href="#">a link</a>. 
+            </div>
+        </div>
+        <div class="footer-banner" style="width:728px; margin:0 auto"></div>
+    </div>
 	<div class="g-btmbar"> 
 		<div class="m-playbar m-playbar-lock" style="top: -53px; visibility: visible;" id="auto-id-9r2oUuSFPZQyyrh1"> 
 			<div class="updn"> 

@@ -1,3 +1,4 @@
+// 点击登录、注册效果
 function login(){
   history.replaceState({}, 0, 'http://'+window.location.host+'/online/login/');
   document.getElementById('regist').style.display = 'none';
@@ -14,10 +15,17 @@ function closeWindow(){
   document.getElementById('regist').style.display = 'none';
 }
 
+// 点击标签时进行的一些js操作
 $(document).ready(function(){
 	$('#mymusic').click(function(){
 		alert('mymusic clicked!');
 	});
 })
 
-$(document).pjax('a', '#g_content');
+// pjax绑定
+$(document).pjax('a', '.g-content');
+
+// 主页轮播效果
+$(window).load(function() {
+        $('#slider').nivoSlider();
+    });
