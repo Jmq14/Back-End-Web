@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Music | {% block title %}{% endblock %}</title>
+        <link href="/static/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css" media="screen">
+        <link href="/static/main.css" rel="stylesheet" type="text/css" media="screen">
+        {% block css %}{% endblock %}
+        <script src="/static/jquery.js" type="text/javascript"></script>
+        <script src="/static/bindWithDelay.js" type="text/javascript"></script>
+        <script src="/static/bootstrap/js/bootstrap.js" type="text/javascript"></script>
+        <script src="/static/main.js" type="text/javascript"></script>
+        <script type="text/javascript">
+            var ROOT_URL = '{{ ROOT_URL }}'
+        </script>
+        {% block js %}{% endblock %}
+    </head>
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a href="{% url 'index_page' %}" class="brand">Music</a>
+                    <div class="nav-collapse">
+                        <ul class="nav">
+                            <li><a href="{% url 'index_page' %}"><i class="icon-home icon-gray"></i> Home</a></li>
+                            {% if user.is_authenticated %}
+                            <li><a href="{% url 'my_profile_page' %}"><i class="icon-user icon-gray"></i> My Profile</a></li>
+                            {% if perms.app.can_poll_for_tracks %}
+                            <li><a href="{% url 'load_tracks_page' %}"><i class="icon-check icon-gray"></i> Reload Tracks</a></li>
+                            {% endif %}
+                            <li><a href="{% url 'search_page' %}"><i class="icon-search icon-gray"></i> Search</a></li>
+                            <li><a href="{% url 'logout_page' %}"><i class="icon-off icon-gray"></i> Logout</a></li>
+                            {% else %}
+                            {% endif %} 
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            {% block content %}{% endblock %}
+            <footer class="footer">
+                <small>Copyright &copy; Todd Lunter.</small>
+                <nav>
+                    <ul>
+                        <li><a href="{% url 'index_page' %}"><i class="icon-home"></i> Home</a></li>
+                        {% if user.is_authenticated %}
+                        <li><a href="{% url 'my_profile_page' %}"><i class="icon-user"></i> My Profile</a></li>
+                        {% if perms.app.can_poll_for_tracks %}
+                        <li><a href="{% url 'load_tracks_page' %}"><i class="icon-check"></i> Reload Tracks</a></li>
+                        {% endif %}
+                        <li><a href="{% url 'search_page' %}"><i class="icon-search"></i> Search</a></li>
+                        <li><a href="{% url 'logout_page' %}"><i class="icon-off"></i> Logout</a></li>
+                        {% else %}
+                        {% endif %}
+                    </ul>
+                </nav>
+            </footer>
+        </div>
+    </body>
+</html>
+

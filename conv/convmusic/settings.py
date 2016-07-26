@@ -11,6 +11,16 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import sys
+
+CURRENT_PATH = os.path.dirname(os.path.realpath(__file__))
+PROJECT_PATH = os.path.dirname(CURRENT_PATH)
+ROOT_PATH = os.path.dirname(PROJECT_PATH)
+
+try:
+    import upload_avatar
+except ImportError:
+    sys.path.insert(0, ROOT_PATH)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,7 +49,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'online',
+<<<<<<< HEAD
     'playlist',
+=======
+    'upload_avatar',
+    'music',
+>>>>>>> eb11007015d407eed537c1b4c7ca958e45f74c62
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -70,6 +85,11 @@ TEMPLATES = [
         },
     },
 ]
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+#     'django.template.loaders.eggs.Loader',
+)
 
 WSGI_APPLICATION = 'convmusic.wsgi.application'
 
@@ -82,7 +102,11 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'convmusic',
 	'USER': 'root',
+<<<<<<< HEAD
 	'PASSWORD': '',
+=======
+	'PASSWORD': '123456',
+>>>>>>> eb11007015d407eed537c1b4c7ca958e45f74c62
 	'HOST':'127.0.0.1',
 	'PORT': '3306',
     }
@@ -125,10 +149,44 @@ SITE_ID = 1
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
+<<<<<<< HEAD
 
+=======
+STATIC_ROOT = ''
+>>>>>>> eb11007015d407eed537c1b4c7ca958e45f74c62
 STATIC_URL = '/static/'
+
 
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_PORT = 25
 EMAIL_HOST_USER = 'convmusic@126.com'
 EMAIL_HOST_PASSWORD = '123convmusic'
+
+
+UPLOAD_AVATAR_UPLOAD_ROOT = os.path.join(PROJECT_PATH, 'upload')
+UPLOAD_AVATAR_AVATAR_ROOT = os.path.join(PROJECT_PATH, 'static/avatar')
+UPLOAD_AVATAR_URL_PREFIX_ORIGINAL = 'uploadedimage/'
+UPLOAD_AVATAR_URL_PREFIX_CROPPED = '/static/avatar/'
+
+UPLOAD_AVATAR_RESIZE_SIZE = [50, 100, 140]
+
+UPLOAD_AVATAR_WEB_LAYOUT = {
+    'preview_areas': [
+        {
+            'size': 50,
+            'text': 'Small Preview'
+        },
+        {
+            'size': 100,
+            'text': 'Middle Preview'
+        },
+        {
+            'size': 140,
+            'text': 'Large Preview'
+        },
+    ]
+}
+
+UPLOAD_AVATAR_TEST_FUNC = lambda request: request.method == 'POST' and \
+                              request.COOKIES.get('user_id')
+UPLOAD_AVATAR_GET_UID_FUNC = lambda request: request.COOKIES.get('user_id')
