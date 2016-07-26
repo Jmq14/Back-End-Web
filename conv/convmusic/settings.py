@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'online',
+    'playlist',
 ]
 
 MIDDLEWARE_CLASSES = [
@@ -81,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'convmusic',
 	'USER': 'root',
-	'PASSWORD': '0000',
+	'PASSWORD': '',
 	'HOST':'127.0.0.1',
 	'PORT': '3306',
     }
@@ -125,9 +126,7 @@ SITE_ID = 1
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
-STATIC_ROOT = ''
 STATIC_URL = '/static/'
-STATICFILES_DIRS = ( os.path.join('static'), )
 
 EMAIL_HOST = 'smtp.126.com'
 EMAIL_PORT = 25

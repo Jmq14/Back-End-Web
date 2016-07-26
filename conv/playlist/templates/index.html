@@ -1,0 +1,9 @@
+{% if playlist_list %} 
+	<ul>
+	{% for playlist in playlist_list %}
+		<li><a href="/playlist/id={{ playlist.id }}/">{{ playlist.name }}</a></li>
+	{% endfor %}
+	</ul> 
+{% else %}
+	<p>No playlists are available.</p> 
+{% endif %}
