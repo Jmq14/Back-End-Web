@@ -65,7 +65,6 @@ html,body {
 }
 
 .g-topbar {
-	position: absolute;
 	left: 0;
 	top: 0;
 	width: 100%;
@@ -73,18 +72,8 @@ html,body {
 	zoom: 1;
 }
 
-.g-iframe {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	border: 0;
-}
-
 .g-btmbar {
 	position: fixed;
-	_position: absolute;
 	zoom: 1;
 	bottom: 0;
 	left: 0;

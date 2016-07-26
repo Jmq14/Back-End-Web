@@ -6,6 +6,7 @@ from online.models import User
 from django.core.mail import send_mail
 from django.contrib.sites.models import Site
 from django.views.decorators.csrf import csrf_exempt
+from django.template.response import TemplateResponse
 import random
 import string
 
@@ -124,10 +125,10 @@ def index(request):
 	return render(request, 'online/index.html', {})
 
 def mymusic(request):
-	return render(request,'online/mymusic.html',{})
+	return HttpResponse("<h1 style = 'font-size: 166px'>online/mymusic.html</h1>")
 
 def discover_playlist(request):
-	return render(request,'online/discover_playlist.html',{})
+	return {'content': 'discover_playlist'}
 
 def discover_ranklist(request):
-	return render(request,'online/discover_ranklist.html',{})
+	return HttpResponse("online/ranklist.html")
