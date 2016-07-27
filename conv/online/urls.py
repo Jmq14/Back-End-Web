@@ -16,5 +16,6 @@ urlpatterns = patterns('',
         ),
     url(r'^%s(?P<filename>.+)/?$' % UPLOAD_AVATAR_URL_PREFIX_CROPPED,
         views.get_avatar
-        )
+        ),
+    url(r'^changepassword/$',views.changepassword,name='changepassword'),
 )

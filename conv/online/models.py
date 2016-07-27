@@ -31,4 +31,4 @@ class User(models.Model, UploadAvatarMixIn):
 	avatar_crop_done.connect(save_avatar_in_db)
 	# don't know its work
 	def __unicode__(self):
-		return self.name
+		return "{\'id\':%s" % self.id+",\'name\':\'%s\'"%self.name+",\'email\':\'%s\'}"%self.email

@@ -44,6 +44,12 @@ class LogUserForm(forms.Form):
 	email = forms.EmailField(label='email:',widget=forms.EmailInput())
 	password = forms.CharField(label='password',widget=forms.PasswordInput())
 
+
+class ChangepwdForm(forms.Form):
+	old_pwd = forms.CharField(label='Old password',widget=forms.PasswordInput)
+	new_pwd = forms.CharField(label='New password',widget=forms.PasswordInput)
+	new_pwd2= forms.CharField(label='Confirm password',widget=forms.PasswordInput)
+
 def login_required(func):
 	def _deco(request):
 		if request.COOKIES.get('login')=="True":
@@ -64,8 +70,8 @@ def active(request, activecode):
 	if user:
 		user[0].is_active = True
 		user[0].save()
-		response = HttpResponseRedirect('/online/index')
-		response.set_cookie('user',user[0].id,3600)
+		response = HttpResponseRedirect('/index')
+		response.set_cookie('user',user[0],3600)
 		response.set_cookie('login',True,3600)
 		return response
 	else:
@@ -109,7 +115,7 @@ def login(request):
 			password = uf.cleaned_data['password']
 			user = User.objects.filter(email__exact = email, password__exact = password, is_active__exact = True)
 			if user:
-				response = HttpResponseRedirect('/online/index')
+				response = HttpResponseRedirect('/index')
 				response.set_cookie('user',user[0],3600)
 				response.set_cookie('login',"True",3600)
 				return response
@@ -122,22 +128,17 @@ def login(request):
 #login successfully
 def index(request):
 	user = request.COOKIES.get('user')
-	user_id = request.COOKIES.get('user_id')
-	user_name = request.COOKIES.get('user_name')
-	if user_id:
-		return render_to_response('online/index.html',{'login':True,'user_id':user_id,'user_name':user_name,'user':user}, context_instance=RequestContext(request))
+	login = request.COOKIES.get('login')
+	if login == 'True':
+		return render(request,'online/index.html',{'login':True,'user':eval(user)})
 	else:
-		return render_to_response('online/index.html',{'login':False}, context_instance=RequestContext(request))
+		return render(request,'online/index.html',{'login':False})
 
 @login_required
 def logout(requset):
-	response = HttpResponseRedirect('/online/index')
-
-	#clear cookie
-	response.delete_cookie('user_id')
-	response.delete_cookie('user_email')
-	response.delete_cookie('user_name')
+	response = HttpResponseRedirect('/index')
 	response.delete_cookie('user')
+	response.set_cookie('login',False)
 	return response
 
 @login_required
@@ -167,10 +168,11 @@ def get_avatar(request, filename):
 
 @login_required
 def implement(request):
-	u = User.objects.get(id=user_id)
-	imgs = map(lambda size: "<p><img src='%s'/></p>" % u.get_avatar_url(size), UPLOAD_AVATAR_RESIZE_SIZE)
-	html = """<html><body><h2>%s<a href="/online/upload">upload avatar</a></h2>%s</boby></html>""" % (request.user.username,'\n'.join(imgs))
-	return HttpResponse(html)
+	u = request.COOKIES.get('user')
+	user = User.objects.get(id=eval(u)['id'])
+	imgs = map(lambda size: "<p><img src='%s'/></p>" % user.get_avatar_url(size), UPLOAD_AVATAR_RESIZE_SIZE)
+	html = """<h2>%s<a href="/online/upload">upload avatar</a></h2>%s""" % (user.name,'\n'.join(imgs))
+	return render(request,'online/implement.html',{'html':html})
 
 @login_required
 def upload(request):
@@ -180,6 +182,29 @@ def upload(request):
         context_instance = RequestContext(request)
     )
 
+@login_required
+def changepassword(request):
+	if request.method == 'POST':
+		uf = ChangepwdForm(request.POST)
+		if uf.is_valid():
+			data = uf.cleaned_data
+			u = request.COOKIES.get('user')
+			user = User.objects.get(id= eval(u)['id'])
+			if user.password==data['old_pwd']:
+				if data['new_pwd'] == data['new_pwd2']:
+					user.password=data['new_pwd']
+        			user.save()
+        			response = HttpResponseRedirect('/online/login')
+        			response.delete_cookie('user')
+        			response.set_cookie('login',False)
+        			return response
+        		else:
+        			uf.add_error('new_pwd2','Please input the same password')
+        	else:
+				uf.add_error('old_pwd','Please correct the old password')
+	else:
+		uf = ChangepwdForm()
+	return render(request,'online/changepassword.html',{'uf':uf})
 
 
 

@@ -156,30 +156,22 @@ EMAIL_HOST_USER = 'convmusic@126.com'
 EMAIL_HOST_PASSWORD = '123convmusic'
 
 
-UPLOAD_AVATAR_UPLOAD_ROOT = os.path.join(PROJECT_PATH, 'upload')
+UPLOAD_AVATAR_UPLOAD_ROOT = os.path.join(PROJECT_PATH, 'static/upload')
 UPLOAD_AVATAR_AVATAR_ROOT = os.path.join(PROJECT_PATH, 'static/avatar')
-UPLOAD_AVATAR_URL_PREFIX_ORIGINAL = 'uploadedimage/'
+UPLOAD_AVATAR_URL_PREFIX_ORIGINAL = '/static/upload/'
 UPLOAD_AVATAR_URL_PREFIX_CROPPED = '/static/avatar/'
 
-UPLOAD_AVATAR_RESIZE_SIZE = [50, 100, 140]
+UPLOAD_AVATAR_RESIZE_SIZE = [100, ]
 
 UPLOAD_AVATAR_WEB_LAYOUT = {
     'preview_areas': [
         {
-            'size': 50,
-            'text': 'Small Preview'
-        },
-        {
             'size': 100,
-            'text': 'Middle Preview'
-        },
-        {
-            'size': 140,
-            'text': 'Large Preview'
+            'text': 'Preview'
         },
     ]
 }
 
 UPLOAD_AVATAR_TEST_FUNC = lambda request: request.method == 'POST' and \
-                              request.COOKIES.get('user_id')
-UPLOAD_AVATAR_GET_UID_FUNC = lambda request: request.COOKIES.get('user_id')
+                              request.COOKIES.get('login')=='True'
+UPLOAD_AVATAR_GET_UID_FUNC = lambda request: request.COOKIES.get('login')=='True'
