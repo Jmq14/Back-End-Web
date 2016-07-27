@@ -22,6 +22,10 @@ urlpatterns = [
     url(r'^index/','online.views.index'),
     url(r'^admin/', admin.site.urls),
     url(r'^online/',include('online.urls')),
+<<<<<<< HEAD
+    url(r'^playlist/',include('playlist.urls',namespace="playlist")),
+=======
+>>>>>>> fae7cd3e25cc500fa9bef78f4ad738bf773a54d1
     url(r'', include('upload_avatar.urls')),
     url(r'^music/',include('music.urls')),
 

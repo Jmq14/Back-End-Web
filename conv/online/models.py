@@ -14,6 +14,8 @@ class User(models.Model, UploadAvatarMixIn):
 	is_active = models.BooleanField(default=False)
 	activecode = models.CharField(max_length=50,null=True)
 	avatar_name = models.CharField(max_length=128,null=True)
+	# created_list
+	# marked_list
 
 	def get_uid(self):
 		return self.id
@@ -31,4 +33,8 @@ class User(models.Model, UploadAvatarMixIn):
 	avatar_crop_done.connect(save_avatar_in_db)
 	# don't know its work
 	def __unicode__(self):
+<<<<<<< HEAD
+		return self.name
+=======
 		return "{\'id\':%s" % self.id+",\'name\':\'%s\'"%self.name+",\'email\':\'%s\'}"%self.email
+>>>>>>> fae7cd3e25cc500fa9bef78f4ad738bf773a54d1

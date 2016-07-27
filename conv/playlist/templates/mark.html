@@ -1,0 +1,22 @@
+<div id="mark">
+{% if login %}
+	<h1>你想把 {{ track.title }} 收藏到哪个歌单？</h1>
+	<form action="{% url 'playlist:choose' track_id=track.id %}" method="post"> 
+		{% csrf_token %}
+		{% for playlist in user.created_list.all %}
+			<input type="radio" name="choice" id="playlist{{ forloop.counter }}" value="{{ playlist.id }}" />
+			<label for="choice{{ forloop.counter }}">{{ playlist.name }}</label><br /> 
+		{% endfor %}
+		<input type="radio" name="choice" id="new_playlist" value="-1" />
+		<label >新建歌单  名称为：</label>
+		<input type="text" name="new_playlist_name">
+		<br /> 
+
+		<input type="submit" value="choose" /> 
+	</form>
+{% else %}
+	<h1>please login!</h1>
+	<br>
+	<a href="/online/login">登陆</a>
+{% endif %}
+</div>
