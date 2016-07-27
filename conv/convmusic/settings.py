@@ -71,7 +71,7 @@ ROOT_URLCONF = 'convmusic.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(PROJECT_PATH,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -175,3 +175,5 @@ UPLOAD_AVATAR_WEB_LAYOUT = {
 UPLOAD_AVATAR_TEST_FUNC = lambda request: request.method == 'POST' and \
                               request.COOKIES.get('login')=='True'
 UPLOAD_AVATAR_GET_UID_FUNC = lambda request: request.COOKIES.get('login')=='True'
+
+MUSIC_FOLDER = os.path.join(PROJECT_PATH,'Music/') 

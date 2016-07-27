@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from online.models import User
 from django.conf import settings
 
 # Create your models here.
@@ -8,10 +8,10 @@ class Setting(models.Model):
     value = models.CharField(max_length=255)
 
 class Track(models.Model):
-    title = models.CharField(db_index=True, max_length=255)
-    artist = models.CharField(db_index=True, max_length=255)
-    album = models.CharField(db_index=True, max_length=255)
-    albumartist = models.CharField(db_index=True, max_length=255)
+    title = models.CharField(max_length=255)
+    artist = models.CharField(max_length=255)
+    album = models.CharField(max_length=255)
+    albumartist = models.CharField(max_length=255)
     length = models.IntegerField()
     file_path = models.CharField(max_length=255)
 

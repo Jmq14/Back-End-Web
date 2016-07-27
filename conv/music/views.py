@@ -1,7 +1,7 @@
 from music.models import Track, QueueItem, Setting, ScanCount, SearchCount
 from django.conf import settings
-from django.contrib.auth.models import User
-from django.shortcuts import render_to_response, get_object_or_404
+from online.models import User
+from django.shortcuts import render_to_response, get_object_or_404, render
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
@@ -64,21 +64,23 @@ def term_triangle(ta, terms):
 
 def index_view(request):
     queue_items = QueueItem.objects.filter(played = False, deleted = False).order_by('pk')[0:10]
-    
-    return render_to_response('index.html',
-            {'queue_items': queue_items},
-            context_instance=RequestContext(request))
+    user = request.COOKIES.get('user')
+    login = request.COOKIES.get('login')
+    return render(request,'music/index.html',
+            {'queue_items': queue_items,'user':eval(user),'login':eval(login)},
+            )
 
 @login_required
 def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse('index_page'))
 
-@login_required
-def profile_view(request, username = None):
-    username = username if username else request.user.username
-    
-    user_profile = get_object_or_404(User, username__exact = username)
+def profile_view(request, user_id = None):
+    if user_id:
+        user_profile= get_object_or_404(User, id__exact = user_id)
+    else:
+        u = eval(request.COOKIES.get('user'))
+        user_profile= get_object_or_404(User, id__exact = u['id'])
     m = hashlib.md5()
     m.update(user_profile.email.lower())
     gravatar_email = m.hexdigest()
@@ -86,7 +88,7 @@ def profile_view(request, username = None):
     queue_tracks = QueueItem.objects.filter(user = user_profile).exclude(deleted = True).order_by('-time_added')[:10]
     queueitems_count = user_profile.queueitem_set.exclude(deleted = True).count()
     
-    return render_to_response('profile.html',
+    return render_to_response('music/profile.html',
             {'user_profile': user_profile,
              'gravatar_email': gravatar_email,
              'queue_tracks': queue_tracks,
@@ -100,12 +102,12 @@ def search_view(request):
         
         search_data = instant_search_fn(search_terms) 
         
-        return render_to_response('search.html',
+        return render_to_response('music/search.html',
                 {'search_terms': search_terms,
                  'search_data': search_data},
                 context_instance=RequestContext(request))
     
-    return render_to_response('search.html',
+    return render_to_response('music/search.html',
             context_instance=RequestContext(request))
 
 
@@ -201,7 +203,9 @@ def queue_track_view(request):
             if queued and confirmation is False:
                 return HttpResponse('confirm')
             
-            QueueItem.objects.create(user = request.user, track = track, played = False, deleted = False)
+            u = eval(request.COOKIES.get('user'))
+            user = get_object_or_404(User, id__exact = u['id'])
+            QueueItem.objects.create(user = user, track = track, played = False, deleted = False)
             
             return HttpResponse('success')
         
@@ -221,12 +225,11 @@ def delete_queue_item_view(request):
 
     return Http404
 
+@login_required
 def load_tracks_view(request):
-    if not request.user.has_perm('app.can_poll_for_tracks'):
-        return render_to_response('load_tracks/permissions.html',
-                context_instance=RequestContext(request))
-    
-    scans = request.user.scancount_set
+    u = eval(request.COOKIES.get('user'))
+    user = get_object_or_404(User, id__exact = u['id'])
+    scans = user.scancount_set
     current_scans = scans.exclude(state = 'VE').order_by('-pk')
     
     if current_scans.count() > 0:
@@ -235,24 +238,24 @@ def load_tracks_view(request):
         if latest_scan.state == 'FI':
             latest_scan.state = 'VE'
             latest_scan.save()
-            return render_to_response('load_tracks/finished.html',
+            return render_to_response('music/load_tracks/finished.html',
                     {'scan': latest_scan},
                     context_instance=RequestContext(request))
         
         percentage = float(latest_scan.curr_count)/float(latest_scan.total_count)*100
-        return render_to_response('load_tracks/running.html',
+        return render_to_response('music/load_tracks/running.html',
                 {'scan':latest_scan, 'percentage':percentage},
                 context_instance=RequestContext(request))
     
     successful = start_track_update(request)
     
     if not successful:
-        return render_to_response('load_tracks/error.html',
+        return render_to_response('music/load_tracks/error.html',
                 {'error': 'no tracks'},
                 context_instance=RequestContext(request))
     
     latest_scan = current_scans[0]
-    return render_to_response('load_tracks/success.html',
+    return render_to_response('music/load_tracks/success.html',
             {'scan':latest_scan},
             context_instance=RequestContext(request))
 
@@ -263,7 +266,9 @@ def start_track_update(request):
     if not track_count:
         return False
     
-    scanner = ScanCount(user = request.user,
+    u = eval(request.COOKIES.get('user'))
+    user = get_object_or_404(User, id__exact = u['id'])
+    scanner = ScanCount(user = user,
                         curr_count = 0,
                         total_count = track_count,
                         state = 'ST')
