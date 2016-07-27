@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'music/layout.html' %}
 
 {% block title %}Home{% endblock %}
 {% block css %}<link href="/static/index.css" rel="stylesheet" type="text/css" media="screen">{% endblock %}
@@ -8,7 +8,7 @@
                 {% if login %}
                 <div class="hero-unit center">
                     <h1>Welcome!</h1>
-                    <a class="btn btn-primary btn-large" href="{% url 'search_page' %}">Search</a>
+                    <a class="btn btn-primary btn-large" href="/music/search">Search</a>
                 </div>
                 <table class="table">
                     <thead>

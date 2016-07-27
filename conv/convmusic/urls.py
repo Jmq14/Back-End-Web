@@ -19,10 +19,12 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 
 urlpatterns = [
+    url(r'^index/','online.views.index'),
     url(r'^admin/', admin.site.urls),
     url(r'^online/',include('online.urls')),
     url(r'^playlist/',include('playlist.urls',namespace="playlist")),
     url(r'', include('upload_avatar.urls')),
     url(r'^music/',include('music.urls')),
+
 ]
 urlpatterns += staticfiles_urlpatterns()  

@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'music/layout.html' %}
 
 {% block title %}{{ user_profile.username }}'s Profile{% endblock %}
 {% block css %}<link href="/static/profile.css" rel="stylesheet" type="text/css" media="screen">{% endblock %}
@@ -11,7 +11,7 @@
         <section>
             <img src="http://gravatar.com/avatar/{{ gravatar_email }}.png" alt="{{ user_profile.username }}" class="gravatar">
             <h1>
-                {{ user_profile.username }}
+                {{ user_profile.name }}
             </h1>
             <p>
                 {{ queueitems_count }} Queued Track{{ queueitems_count|pluralize }}

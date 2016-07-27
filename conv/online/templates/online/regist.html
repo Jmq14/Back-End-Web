@@ -5,10 +5,28 @@
 </head>
 <body>
 <h1>注册页面：</h1>
-<li> {{errmsg}} </li>
 <form method="post" enctype="multipart/form-data">
 	{% csrf_token %}
-	{{uf.as_p}}
+	<div class="fieldWrapper">
+    {{ uf.email.errors }}
+    {{ uf.email.label_tag }}
+    {{ uf.email }}
+	</div>
+	<div class="fieldWrapper">
+    {{ uf.name.errors }}
+    {{ uf.name.label_tag }}
+    {{ uf.name }}
+	</div>
+	<div class="fieldWrapper">
+    {{ uf.password.errors }}
+    {{ uf.password.label_tag }}
+    {{ uf.password }}
+	</div>
+	<div class="fieldWrapper">
+    {{ uf.password_again.errors }}
+    {{ uf.password_again.label_tag }}
+    {{ uf.password_again }}
+	</div>
 	<input type="submit" value="ok" />
 </form>
 <br>
