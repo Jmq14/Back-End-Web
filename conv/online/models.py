@@ -14,6 +14,8 @@ class User(models.Model, UploadAvatarMixIn):
 	is_active = models.BooleanField(default=False)
 	activecode = models.CharField(max_length=50,null=True)
 	avatar_name = models.CharField(max_length=128,null=True)
+	# created_list
+	# marked_list
 
 	def get_uid(self):
 		return self.id

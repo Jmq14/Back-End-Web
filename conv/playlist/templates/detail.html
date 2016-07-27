@@ -1,0 +1,15 @@
+<h1>{{playlist.name}}</h1>
+<h2>created by {{playlist.owner.name}} on {{playlist.pub_date}} </h2>
+{% if music_list %} 
+	<table >
+	{% for track in music_list %}
+		<tr>
+			<th><a href="#">{{ track.title }}</a> </th>
+			<th><a href="/playlist/trackid={{ track.id }}/mark/">收藏</a></th>
+		</tr>
+	{% endfor %}
+	</table> 
+{% else %}
+	<p>No items are available.</p> 
+{% endif %}
+
